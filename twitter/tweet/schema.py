@@ -14,6 +14,7 @@ class TweetSchema(base_schema.Schema):
     msg = fields.String(required=False)
     like = fields.Integer(required=False)
     people_id = fields.Integer(required=True)
+    created = fields.Date(required=False)
 
     @pre_load
     def check_msg(self, data):
@@ -23,4 +24,3 @@ class TweetSchema(base_schema.Schema):
             raise exceptions.WrongDataException("tweet is exceeding 140 characters.")
         if not People.objects.filter(id=data['people_id']).exists():
             raise exceptions.DataNotFoundException("No such user exists")
-        return data

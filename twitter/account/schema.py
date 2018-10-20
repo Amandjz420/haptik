@@ -42,10 +42,10 @@ class PeopleSchema(base_schema.Schema):
 
     @pre_load
     def check_email(self, data):
-        if 'email' not in data['user'] or self.context['method'] != "PUT":
+        if 'email' not in data['user']:
             raise exceptions.WrongDataException("Email id is must")
-        # if User.objects.filter(email=data['user']['email']).exists():
-        #     raise exceptions.DuplicateDataException("Email already taken. Try something else")
+        if User.objects.filter(email=data['user']['email']).exists():
+            raise exceptions.DuplicateDataException("Email already taken. Try something else")
         return data
 
     @post_load
@@ -93,6 +93,6 @@ class ProfileSelectionApiSchema(base_schema.Schema):
     user_id = fields.Integer(required=False)
     phone_number = fields.String(required=False)
     followed = fields.List(fields.Integer(), required=False)
-    increase_follow = fields.Boolean(default=False)
-    follower_change = fields.Boolean(default=False)
+    increase_follow = fields.Boolean(required=False)
+    follower_change = fields.Boolean(required=False)
 
