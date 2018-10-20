@@ -1,4 +1,3 @@
-import logging
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth import authenticate
@@ -16,8 +15,7 @@ class UserSchema(base_schema.Schema):
     email = fields.String(required=True)
     password = fields.String(required=True)
 
-
-    @validates_schema(skip_on_field_errors=True)
+    @validates_schema
     def validates_payload_data(self, data):
         if User.objects.filter(username=data['username']).exists():
             raise exceptions.DuplicateDataException("Username already taken. Try something else")

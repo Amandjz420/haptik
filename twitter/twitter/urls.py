@@ -21,5 +21,7 @@ urlpatterns = [
     url(r'^api/', include([
         url(r'^account/', include('account.urls',
                                  namespace='account')),
+        url(r'^dashboard/', include('tweet.urls',
+                                 namespace='dashboard')),
     ])),
 ]
