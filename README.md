@@ -1,299 +1,74 @@
-# TWITTER
+# function solution
+This folder contains solution to question 1 and question 3
+first install requirement.txt in function_solution folder
 
-# Account app api with success response
-===================================================================
+then run file to see output
+python activeuser.py
+python wordformer.py
 
-api_url -> /api/account/people/
-FOR SIGNING UP A USER
-POST Request:
-payload:{
-    "phone_number":"8441000947",
-    "user": {
-		"username":"admin3",
-		"password":"admin123",
-		"email": "112223@123.com"
-	}
-}
+# twitter
+For building the backend of Twitter, i used Django a python frameworks.
+As for the sites like twitter or facebook. the developer has to process large number of data for which
+python provides good library, be it for data crunching or using machine learning.
+Also django is very scalable tool with easy integration for db or any workers.
 
-reponse: {"token": "b799bf3359d47a12fc560c6f703b1a7edde1e7a9"}
+I am using PostgressDb for having access of ArrayField
 
+# DB Schema
+There are two tables holding all the data
 
-===================================================================
+1.) People model:
 
-API_URL -> api/account/login/
-FOR LOGIN A USER
-POST Request:
-payload:{
-	"username_or_email": "admin1",
-	"password": "admin123"
-}
+user - onetoonefield with User django provides
+phone_number - is a string that can contain mar 13 digits
+birth_date - is a date field
+followed - An arrayfield for containing the other people ids for following them
+created - date field for creation of object
+modified - date field for modification of object
 
-reponse: {"token": "b799bf3359d47a12fc560c6f703b1a7edde1e7a9"}
+2.) Tweet model:
 
-
-===================================================================
-
-API_URL -> api/account/logout/
-FOR LOGOUT A USER
-POST Request:
-payload:{
-	"username": "admin1",
-}
-
-reponse: {'success': 'logged out'}
-
-
-===================================================================
-
-API_URL -> api/account/people/3/
-For getting a user profile
-GET Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
-reponse: {
-    "phone_number": "8441000947",
-    "user_id": 2,
-    "followed": [
-        3
-    ],
-}
-
-===================================================================
-
-API_URL -> api/account/people/3/
-For updating a user profile
-PUT Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
-request payload: {
-    "phone_number": "8441000947",
-    "user_id": 2,
-}
-
-reponse: {
-    "phone_number": "8441000947",
-    "user_id": 2,
-    "followed": [
-        3
-    ],
-}
-
-===================================================================
-
-API_URL -> api/account/people/3/
-For deleting a user profile
-DELETE Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
-
-reponse: {"status": "Deleted"}
-
-===================================================================
-
-
-API_URL -> api/account/people/3/
-FOR FOLLWING A NEW USER(id =5)
-PUT Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
-request payload: {
-    "followed": ["5"],
-    "user_id": 2,
-    "increase_follow" : true,
-	"follower_change" : true,
-}
-
-reponse: {
-    "phone_number": "8441000947",
-    "user_id": 2,
-    "followed": [
-        3,4,5
-    ],
-}
-
-===================================================================
-
-
-API_URL -> api/account/people/3/
-FOR UNFOLLWING A USER(id =5)
-PUT Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
-request payload: {
-    "followed": ["5"],
-    "user_id": 2,
-    "increase_follow" : false,
-	"follower_change" : true,
-}
-
-reponse: {
-    "phone_number": "8441000947",
-    "user_id": 2,
-    "followed": [
-        3,4
-    ],
-}
-
-===================================================================
-===================================================================
-===================================================================
+title - is a string that has title of any tweet
+msg - is a string that is content of any tweet
+like - number of like for a post
+people - foreign key with the model People
+created - date field for creation of object
+modified - date field for modification of object
 
 
 
+API's:
 
-# Tweet app api with success response
+POST - /api/account/people/ FOR SIGNING UP A PERSON
+POST - /api/account/login/ FOR LOGIN A USER POST
+POST - /api/account/logout/ FOR LOGOUT A USER POST
+
+GET - /api/account/people/3/ FOR GETTING A PERSON PROFILE
+PUT - /api/account/people/3/ For updating a user profile,
+            Same api with different payload can be used to follow/unfollow another person
+
+DELETE - /api/account/people/3/ For deleting a user profile
+
+GET - /api/dashboard/homepage/ FOR SHOWING THE TWEETS ON HOME PAGE OF THE FOLLOWED USER IN RECENT SORTED ORDER
+POST - /api/dashboard/tweets/ FOR Creating a new tweet
+GET - /api/dashboard/mytweets/ FOR GETTING MY TWEET
+PUT - /api/dashboard/tweets/(?P[0-9]+)/ FOR Updating a particular tweet
+DELETE - /api/dashboard/tweets/(?P[0-9]+)/ FOR DELETING A TWEET DELETE
 
 
-===================================================================
+This backend server cant take too many request simultaneously,
+we will have to use nginx like service to get the requests from users
+Also the array field for storing following will create a problem and very heavy sql query as data grows
 
 
-API_URL -> api/dashboard/homepage/
-FOR SHOWING THE TWEETS ON HOME PAGE OF THE FOLLOWED USER IN RECENT SORTED ORDER
-GET Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
 
-reponse: [
-    {
-        "msg": "ass",
-        "people_id": 3,
-        "like": 0,
-        "title": "tackle"
-    },
-    {
-        "msg": "asdasddas asdasd a. asdds",
-        "people_id": 3,
-        "like": 0,
-        "title": "tackle"
-    },
-    {
-        "msg": "asdasddas asdasd a. asdds",
-        "people_id": 5,
-        "like": 0,
-        "title": "dadsas"
-    },
-    {
-        "msg": "asdasddas asdasd a. asdds",
-        "people_id": 6,
-        "like": 0,
-        "title": "dadsas"
-    },
-    {
-        "msg": "asdasddas asdasd a. asdds",
-        "people_id": 7,
-        "like": 0,
-        "title": "dadsas"
-    },
-    {
-        "msg": "asdasddas asdasd a.",
-        "people_id": 1,
-        "like": 1,
-        "title": "dads"
-    }
-]
+For starting the twitter dajngo service
+go to twitter directory
+run command
+- pip install -r requirement.txt
+- install postgres on the system
+- python manage.py migrate
+- python manage.py runserver
+- Keep populating the data using the api documentation in twitter's READme
 
-===================================================================
 
-API_URL -> api/dashboard/tweet/
-FOR Creating a new tweet
-GET Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
-request_payload: {
-        "msg": "ass",
-        "people_id": 2,
-        "like": 0,
-        "title": "tackle"
-}
-response:{
-    "id": 6
-}
-
-===================================================================
-
-API_URL -> api/dashboard/mytweets/
-FOR GETTING ALL USER TWEET
-GET Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
-response:[
-    {
-        "msg": "ass",
-        "people_id": 2,
-        "id": 6,
-        "like": 0,
-        "title": "tackle"
-    },
-    {
-        "msg": "asdasddas asdasd a. asdds",
-        "people_id": 2,
-        "id": 5,
-        "like": 0,
-        "title": "tackle"
-    },
-    {
-        "msg": "asdasddas asdasd a. asdds",
-        "people_id": 2,
-        "id": 3,
-        "like": 0,
-        "title": "dadsas"
-    },
-    {
-        "msg": "asdasddas asdasd a. asdds",
-        "people_id": 2,
-        "id": 2,
-        "like": 0,
-        "title": "dadsas"
-    }
-]
-
-===================================================================
-
-API_URL -> api/dashboard/tweets/(?P<pk>[0-9]+)//
-FOR Updating a particular tweet
-PUT Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
-request_payload: {
-        "people_id": 2,
-        "like": 10,
-        "title": "tackle"
-}
-response:{
-        "msg": "sadsaa asddsa aass"
-        "people_id": 2,
-        "like": 10,
-        "title": "tackle"
-}
-
-===================================================================
-
-API_URL -> api/dashboard/tweets/(?P<pk>[0-9]+)//
-FOR DELETING A TWEET
-DELETE Request:
-header: {
-    "Content-Type": "application/json"
-    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
-}
-
-response:{"status": "Deleted"}
-
-===================================================================
