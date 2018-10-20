@@ -4,7 +4,7 @@
 
 from account.models import People
 from elapi import base_schema, fields, exceptions
-from marshmallow import validates_schema, post_dump, pre_load, post_load, pre_dump
+from marshmallow import pre_load
 
 
 class TweetSchema(base_schema.Schema):
