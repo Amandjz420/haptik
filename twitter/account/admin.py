@@ -8,4 +8,13 @@ from django.contrib import admin
 
 from .models import People
 
-admin.site.register(People)
+
+class PeopleAdmin(admin.ModelAdmin):
+    """
+    Admin for VersionFact
+    """
+
+    list_display = [f.name for f in People._meta.fields]
+
+
+admin.site.register(People, PeopleAdmin)

@@ -33,7 +33,7 @@ class UserSchema(base_schema.Schema):
         return data
 
 
-class SignUpSchema(base_schema.Schema):
+class PeopleSchema(base_schema.Schema):
     id = fields.String(required=False)
     user = fields.Nested(UserSchema, attribute='user')
     phone_number = fields.String(required=False)
@@ -42,10 +42,10 @@ class SignUpSchema(base_schema.Schema):
 
     @pre_load
     def check_email(self, data):
-        if 'email' not in data['user']:
+        if 'email' not in data['user'] or self.context['method'] != "PUT":
             raise exceptions.WrongDataException("Email id is must")
-        if User.objects.filter(email=data['user']['email']).exists():
-            raise exceptions.DuplicateDataException("Email already taken. Try something else")
+        # if User.objects.filter(email=data['user']['email']).exists():
+        #     raise exceptions.DuplicateDataException("Email already taken. Try something else")
         return data
 
     @post_load
@@ -86,3 +86,13 @@ class LogoutSchema(base_schema.Schema):
     def check_username(self, data):
         if not User.objects.filter(username=data['username']).exists():
             raise exceptions.DataNotFoundException("Invalid User")
+
+
+class ProfileSelectionApiSchema(base_schema.Schema):
+    id = fields.String(required=False)
+    user_id = fields.Integer(required=False)
+    phone_number = fields.String(required=False)
+    followed = fields.List(fields.Integer(), required=False)
+    increase_follow = fields.Boolean(default=False)
+    follower_change = fields.Boolean(default=False)
+
