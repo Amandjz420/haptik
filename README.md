@@ -232,12 +232,6 @@ header: {
     "Content-Type": "application/json"
     "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
 }
-request_payload: {
-        "msg": "ass",
-        "people_id": 2,
-        "like": 0,
-        "title": "tackle"
-}
 response:[
     {
         "msg": "ass",
@@ -268,5 +262,38 @@ response:[
         "title": "dadsas"
     }
 ]
+
+===================================================================
+
+API_URL -> api/dashboard/tweets/(?P<pk>[0-9]+)//
+FOR Updating a particular tweet
+PUT Request:
+header: {
+    "Content-Type": "application/json"
+    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
+}
+request_payload: {
+        "people_id": 2,
+        "like": 10,
+        "title": "tackle"
+}
+response:{
+        "msg": "sadsaa asddsa aass"
+        "people_id": 2,
+        "like": 10,
+        "title": "tackle"
+}
+
+===================================================================
+
+API_URL -> api/dashboard/tweets/(?P<pk>[0-9]+)//
+FOR DELETING A TWEET
+DELETE Request:
+header: {
+    "Content-Type": "application/json"
+    "Authorization": "token 75e5639339a65e97dfe93a9a9e6b0d7e86c4c090"
+}
+
+response:{"status": "Deleted"}
 
 ===================================================================
