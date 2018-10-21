@@ -72,3 +72,14 @@ run command
 - Keep populating the data using the api documentation in twitter's READme
 
 
+
+# tweetform
+This is frontend code for just calling and creating the tweet creation api.
+We just need to update the people_id in the state and put correct token
+and click submit which will hit post request.
+And in successful try it will get shown in alert
+
+go to directory tweetform
+run command
+- npm install
+- npm start

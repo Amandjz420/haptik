@@ -11,7 +11,7 @@ from .models import People
 
 class PeopleAdmin(admin.ModelAdmin):
     """
-    Admin for VersionFact
+    Admin for PeopleAdmin
     """
 
     list_display = [f.name for f in People._meta.fields]
