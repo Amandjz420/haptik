@@ -1,0 +1,21 @@
+
+.App-header {
+  background-color: deepskyblue;
+  font-style: italic;
+  height: 10vw;
+  margin-top: -32px;
+  text-align: center;
+  font-size: x-large;
+}
+
+.form {
+  text-align: start;
+}
+
+input{
+  width: 20vw;
+}
+.content input{
+  width: 20vw;
+  height: 20vw;
+}
